@@ -1,0 +1,100 @@
+
+from django.shortcuts import render
+from .models import Book,Library
+from django.views.generic import DetailView,CreateView
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.forms import BookForm
+
+# Create your views here.
+def Book_List(request):
+
+     books = Book.objects.all()  #to fectch all the book instances from the database
+     context = {'book_list': books}  # Create a context dictionary with book list
+     return render(request, 'templates/list_books.html', context)
+
+class LibraryDetailView(DetailView):
+  """A class-based view for displaying details of a specific library."""
+  model = Library
+  template_name = 'templates/library_detail.html'
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)  
+    book = self.get_object() 
+    context['average_rating'] = book.get_average_rating() 
+
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "templates/register.html"
+
+def LogoutView(request):
+    return render(request, 'templates/logout.html')
+
+def LoginView(request):
+    return render(request, 'templates/login.html')
+
+def Register(request):
+    return render(request, 'templates/register.html')
+
+class CustomLoginView(LoginView):
+    template_name = 'templates/login.html'
+    redirect_authenticated_user = True
+
+def check_role(user, role):
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == role
+
+@user_passes_test(lambda user: check_role(user, 'Admin'))
+def admin_view(request):
+    return render(request, 'templates/admin_view.html')
+
+
+@user_passes_test(lambda user: check_role(user, 'Librarian'))
+def librarian_view(request):
+    return render(request, 'templates/librarian_view.html')
+
+# Member view
+@user_passes_test(lambda user: check_role(user, 'Member'))
+def member_view(request):
+    return render(request, 'templates/member_view.html')
+
+# Add book view
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm()
+    return render(request, 'templates/add_book.html', {'form': form})
+
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'templates/edit_book.html', {'form': form})
+
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('book_list')
+    return render(request,'templates/delete_book.html', {'book': book})
