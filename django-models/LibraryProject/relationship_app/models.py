@@ -25,6 +25,7 @@ class Librarian(models.Model):
     Library = models.OneToOneField(Library)
     def __str__(self):
         return self.name
+    #library
 
 
 class UserProfile(models.Model):
