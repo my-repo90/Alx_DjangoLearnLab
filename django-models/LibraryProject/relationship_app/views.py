@@ -8,11 +8,12 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required ,login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import BookForm
 from .models import Library
 from django.views.generic.detail import DetailView
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -103,3 +104,21 @@ def delete_book(request, book_id):
     return render(request,'relationship_app/delete_book.html', {'book': book})
 
 #UserCreationForm()
+class CustomLogoutView(LogoutView):
+    template_name = 'relationship_app/logout.html'
+	
+
+@login_required
+@user_passes_test(User.userprofile.role == 'Admin')
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+@login_required
+@user_passes_test(User.userprofile.role == 'Librarian')
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@login_required
+@user_passes_test(User.userprofile.role == 'Member')
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
