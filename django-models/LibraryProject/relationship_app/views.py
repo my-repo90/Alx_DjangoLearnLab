@@ -14,6 +14,7 @@ from django.forms import BookForm
 from .models import Library
 from django.views.generic.detail import DetailView
 
+
 # Create your views here.
 def Book_List(request):
 
