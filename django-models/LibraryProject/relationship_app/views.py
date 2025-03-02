@@ -122,3 +122,5 @@ def librarian_view(request):
 @user_passes_test(User.userprofile.role == 'Member')
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+"Admin"
