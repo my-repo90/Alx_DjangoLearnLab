@@ -107,20 +107,3 @@ def delete_book(request, book_id):
 class CustomLogoutView(LogoutView):
     template_name = 'relationship_app/logout.html'
 	
-
-@login_required
-@user_passes_test(User.userprofile.role == 'Admin')
-def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
-
-@login_required
-@user_passes_test(User.userprofile.role == 'Librarian')
-def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
-
-@login_required
-@user_passes_test(User.userprofile.role == 'Member')
-def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
-
-"Admin"
