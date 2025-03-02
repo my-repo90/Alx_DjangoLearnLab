@@ -18,3 +18,4 @@ urlpatterns = [
     path('books/add_book/', add_book, name='add_book'),
    
 ]
+"views.register", "LogoutView.as_view(template_name=", "LoginView.as_view(template_name="
