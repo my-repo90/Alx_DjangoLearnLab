@@ -1,9 +1,9 @@
 from django.db import models
 
 
-from django.contrib.auth.models import AbstractBaseUser ,BaseUserManager
+from django.contrib.auth.models import AbstractUser ,BaseUserManager
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField()
     profile_photo = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
     
