@@ -11,8 +11,7 @@ class CustomUser(AbstractUser):
     # profile_photo: An image field.
 
 
-class CustomAccountManager(BaseUserManager):
-
+class CustomUserManager(BaseUserManager):
     
     # create_user: Ensure it handles the new fields correctly.
     # create_superuser: Ensure administrative users can still be created with the required fields.
