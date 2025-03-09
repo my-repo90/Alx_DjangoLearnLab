@@ -53,7 +53,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
-AUTH_USERS_MODEL = 'users.CustomUser'
+AUTH_USERS_MODEL = 'bookshelf.CustomUser'
 
 TEMPLATES = [
     {
