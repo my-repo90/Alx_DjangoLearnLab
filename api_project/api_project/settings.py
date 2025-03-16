@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'rest_framework.authtoken',
     'rest_framework.authentication.TokenAuthentication',
+    'rest_framework.permissions.IsAuthenticated',
 ]
 
 
