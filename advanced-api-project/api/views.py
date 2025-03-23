@@ -6,6 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import serializers
 from rest_framework import filters
+from django_filters import rest_framework
 
 #["ListView", "DetailView", "CreateView", "UpdateView", "DeleteView"]
 class Book_List_View(generics.ListAPIView):
