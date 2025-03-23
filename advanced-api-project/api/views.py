@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework import serializers
 from rest_framework import filters
 
-
+#["ListView", "DetailView", "CreateView", "UpdateView", "DeleteView"]
 class Book_List_View(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
